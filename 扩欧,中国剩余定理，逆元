@@ -1,0 +1,43 @@
+const int N = 2e5 + 5;
+//#define int ll
+typedef pair<int, int> PII;
+
+ll exgcd(ll a, ll b, ll& x, ll& y)
+{
+    if (!b)
+    {
+        x = 1; y = 0;
+        return a;
+    }
+    int d = exgcd(b, a % b, y, x);
+    y -= (a / b) * x;
+    return d;
+}
+
+ll inver(ll a, ll m)//求逆元
+{
+	ll x, y;
+	exgcd(a, m, x, y);
+	return (x % m + m) % m;
+}
+
+//中国剩余定理，P1475
+ll n, m, k, q;
+ll a[N], b[N];
+int gcd(int a, int b){return b ? gcd(b, a % b) : a;}
+
+void solve()
+{
+	cin >> n;
+	ll m = 1;
+	ll ans = 0;
+	for (int i = 0; i < n; i++)cin >> a[i] >> b[i], m *= a[i];
+	for (int i = 0; i < n; i++)
+	{
+		ll mi = m / gcd(m, a[i]);
+		ll t, x;
+		exgcd(mi, a[i], t, x);
+		ans = (ans + b[i] * t * mi) % m;
+	}
+	cout << (ans % m + m) % m;
+}
